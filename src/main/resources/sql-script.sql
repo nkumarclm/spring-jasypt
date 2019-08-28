@@ -1,0 +1,17 @@
+CREATE TABLE customer (
+  CUST_ID number(10) check (CUST_ID > 0) NOT NULL,
+NAME varchar2(100) NOT NULL,
+AGE number(10) check (AGE > 0) NOT NULL,
+PRIMARY KEY (CUST_ID)
+)  ;
+
+-- Generate ID using sequence and trigger
+CREATE SEQUENCE customer_seq START WITH 2 INCREMENT BY 1;
+
+CREATE OR REPLACE TRIGGER customer_seq_tr
+BEFORE INSERT ON customer FOR EACH ROW
+WHEN (NEW.CUST_ID IS NULL)
+BEGIN
+SELECT customer_seq.NEXTVAL INTO :NEW.CUST_ID FROM DUAL;
+END;
+/
